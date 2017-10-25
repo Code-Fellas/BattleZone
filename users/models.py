@@ -4,7 +4,7 @@ from django.core.validators import validate_email
 # Create your models here.
 
 
-class User(models.Model):
+class Users(models.Model):
     first_name = models.CharField(max_length=255, default=None)
     last_name = models.CharField(max_length=255, default=None)
     email = models.CharField(max_length=255, validators=[validate_email])
@@ -17,3 +17,6 @@ class User(models.Model):
     is_email_verified = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'users'
