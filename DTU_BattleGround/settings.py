@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'DTU_BattleGround.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': os.environ['DB_HOST'],
+        'PORT': 3306,
+        'NAME': os.environ['DB_USER_NAME'],
+        'USER': os.environ['DB_USER_NAME'],
+        'PASSWORD': os.environ['DB_USER_PASSWORD']
     }
 }
 
