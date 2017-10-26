@@ -13,7 +13,6 @@ import traceback
 class UserCreateView(APIView):
 
     def post(self, request):
-
         try:
             first_name = request.data['first_name']
             last_name = request.data['last_name']
