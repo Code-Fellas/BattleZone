@@ -19,5 +19,6 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include('users.urls')),
-    url(r'', include('ide.urls'))
+    url(r'', include('ide.urls')),
+    url(r'', include('contest.urls'))
 ]
