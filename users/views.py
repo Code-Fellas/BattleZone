@@ -1,11 +1,12 @@
-from django.shortcuts import render
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from users.models import Users
-from django.contrib.auth.hashers import make_password
-from middleware.response import JSONResponse
-from users.serializers import UserSerializer
 import traceback
+
+from django.contrib.auth.hashers import make_password
+from rest_framework.views import APIView
+
+from middleware.response import JSONResponse
+from users.models import Users
+from users.serializers import UserSerializer
+
 
 # Create your views here.
 

@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from ide.models import Languages
+
+from ide import Languages
 
 
 class LanguageSerializer(serializers.ModelSerializer):

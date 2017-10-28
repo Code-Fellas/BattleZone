@@ -40,7 +40,8 @@ INSTALLED_APPS = (
     'pipeline',
     'corsheaders',
     'users',
-    'ide'
+    'ide',
+    'contest'
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
