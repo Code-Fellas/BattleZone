@@ -2,7 +2,6 @@ import traceback
 
 from django.contrib.auth.hashers import make_password
 from rest_framework.views import APIView
-
 from middleware.response import JSONResponse
 from users.models import Users
 from users.serializers import UserSerializer
