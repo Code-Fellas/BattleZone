@@ -528,10 +528,9 @@ model</ColNames>
       <DataType>varchar(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="121" parent="16" name="version">
+    <column id="121" parent="16" name="hackerrank_name">
       <Position>4</Position>
-      <DataType>varchar(20)|0</DataType>
-      <NotNull>1</NotNull>
+      <DataType>char(50)|0</DataType>
     </column>
     <key id="122" parent="16" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
@@ -619,87 +618,92 @@ model</ColNames>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="139" parent="18" name="testcases_919b1d80">
+    <column id="139" parent="18" name="is_sample">
+      <Position>6</Position>
+      <DataType>tinyint(1)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="140" parent="18" name="testcases_919b1d80">
       <ColNames>problem_id</ColNames>
     </index>
-    <key id="140" parent="18" name="PRIMARY">
+    <key id="141" parent="18" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="141" parent="18" name="testcases_problem_id_5be93d6a9b364d32_fk_problems_id">
+    <foreign-key id="142" parent="18" name="testcases_problem_id_5be93d6a9b364d32_fk_problems_id">
       <ColNames>problem_id</ColNames>
       <RefSchemaName>sql12201350</RefSchemaName>
       <RefTableName>problems</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="142" parent="19" name="id">
+    <column id="143" parent="19" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="143" parent="19" name="first_name">
+    <column id="144" parent="19" name="first_name">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="144" parent="19" name="last_name">
+    <column id="145" parent="19" name="last_name">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="145" parent="19" name="email">
+    <column id="146" parent="19" name="email">
       <Position>4</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="146" parent="19" name="mobile_number">
+    <column id="147" parent="19" name="mobile_number">
       <Position>5</Position>
       <DataType>varchar(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="147" parent="19" name="password">
+    <column id="148" parent="19" name="password">
       <Position>6</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="148" parent="19" name="sex">
+    <column id="149" parent="19" name="sex">
       <Position>7</Position>
       <DataType>varchar(10)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="149" parent="19" name="current_year">
+    <column id="150" parent="19" name="current_year">
       <Position>8</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="150" parent="19" name="current_university">
+    <column id="151" parent="19" name="current_university">
       <Position>9</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="151" parent="19" name="is_active">
+    <column id="152" parent="19" name="is_active">
       <Position>10</Position>
       <DataType>tinyint(1)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="152" parent="19" name="is_email_verified">
+    <column id="153" parent="19" name="is_email_verified">
       <Position>11</Position>
       <DataType>tinyint(1)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="153" parent="19" name="created_on">
+    <column id="154" parent="19" name="created_on">
       <Position>12</Position>
       <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="154" parent="19" name="updated_on">
+    <column id="155" parent="19" name="updated_on">
       <Position>13</Position>
       <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="155" parent="19" name="PRIMARY">
+    <key id="156" parent="19" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
