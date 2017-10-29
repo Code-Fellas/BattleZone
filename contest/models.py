@@ -6,8 +6,8 @@ class Contests(models.Model):
     title = models.CharField(max_length=255,default=None)
     contest_code = models.CharField(max_length=20, unique=True, blank=False)
     date = models.CharField(max_length=255)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.CharField(max_length=255)
+    end_time = models.CharField(max_length=255)
     duration = models.BigIntegerField()
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -23,7 +23,6 @@ class Problem(models.Model):
     problem_statement = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
-    judge_solution = models.TextField(default=None)
 
     class Meta:
         db_table = 'problems'
@@ -34,7 +33,7 @@ class Testcases(models.Model):
     input = models.TextField()
     output = models.TextField()
     is_sample = models.BooleanField(default=False)
-    marks = models.IntegerField()
+    marks = models.IntegerField(default=20)
 
     class Meta:
         db_table = 'testcases'
