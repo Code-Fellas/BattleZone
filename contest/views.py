@@ -115,7 +115,6 @@ class CreateContestView(APIView):
             response = {
                 'status': True,
                 'message': 'Created contest' + contest_name + '@ ' + unique_code,
-                #'status': 'contest id is ' + str(new_contest.id)
             }
             return JSONResponse(response)
 
@@ -124,7 +123,7 @@ class CreateContestView(APIView):
             print traceback_string
 
             response = {
-                'message': 'Failed to Create New User',
+                'message': 'Failed to Create New Contest Error :' + traceback_string,
                 'status': False,
                 'exception': e.message
             }
