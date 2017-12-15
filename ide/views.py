@@ -37,24 +37,21 @@ class SubmissionView(APIView):
 
             key = 'hackerrank|1477209-1439|5df27efb8aaee3f89aaa2cfd77a809f0c9fd941b'
             url = 'http://api.hackerrank.com/checker/submission.json'
-            d = {}
-            d['source'] = code
-            d['api_key'] = key
-            d['format'] = 'json'
-            d['lang'] = language_code
+            payload = {}
+            payload['source'] = code
+            payload['api_key'] = key
+            payload['format'] = 'json'
+            payload['lang'] = language_code
 
             contest = Contests.objects.get(contest_code=contest_code)
             contest_id = contest.id
             problem = Problem.objects.filter(problem_code=str(problem_code),contest_id=str(contest_id))
             problem_id = problem.first().id
-            test_cases = Testcases.objects.filter(problem_id=problem_id)
-
-
-            for test_case in test_cases:
-                d['testcases'] = str(test_case.input)
-                print d['testcases']
-                re = requests.post(url, data=d)
-                print re.json()
+            test_cases = str(Testcases.objects.filter(problem_id=problem_id).values_list('input', flat=True))[10:-1]
+            payload['test_cases'] = test_cases
+            print payload
+            response = requests.post(url, payload)
+            print response.json()
 
             return JSONResponse({'HI':'hi'})
 
