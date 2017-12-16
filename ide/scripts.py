@@ -6,14 +6,15 @@ def f():
     url = 'http://api.hackerrank.com/checker/submission.json'
     d = {}
 
-    code = '''n = input()
-print sum(map(int,raw_input().split()))
+    code = '''
+i=0
+while i>0:
+    i+=1
     '''
     print code
     d['source'] = code
     testcases = str(['5\n2 3 4 5 5', '3\n2 3 4', '4\n4 6 6 10', '5\n111 111 111 111 111'])
     d['testcases'] = testcases
-    print testcases
     d['api_key']=key
     d['format']='json'
     d['lang']='5'

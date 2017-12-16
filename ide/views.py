@@ -47,13 +47,51 @@ class SubmissionView(APIView):
             contest_id = contest.id
             problem = Problem.objects.filter(problem_code=str(problem_code),contest_id=str(contest_id))
             problem_id = problem.first().id
-            test_cases = str(Testcases.objects.filter(problem_id=problem_id).values_list('input', flat=True))[10:-1]
-            payload['test_cases'] = test_cases
-            print payload
-            response = requests.post(url, payload)
-            print response.json()
+            test_cases = Testcases.objects.filter(problem_id=problem_id).values_list("input", flat=True)
+            test_cases = [tc.encode('ascii', 'ignore') for tc in test_cases]
 
-            return JSONResponse({'HI':'hi'})
+            payload['testcases'] = str(test_cases)
+            response = requests.post(url, payload)
+
+            response = response.json()
+            output = list(response['result']['stdout'])
+            memory = response['result']['memory']
+            total_memory = sum(memory)
+            time = response['result']['time']
+            total_time = sum(time)
+            message = response['result']['message']
+            compile_message = response['result']['compilemessage']
+            status = ""
+            if compile_message == "":
+                if "Runtime error" in message:
+                    status = "Runtime error"
+                if "Terminated due to timeout" in message:
+                    status = "TLE"
+                correct_output = list(Testcases.objects.filter(problem_id=problem_id).values_list("output", "marks"))
+                score = 0
+                is_correct = True
+                for i in range(len(correct_output)):
+                    if output[i].strip() == correct_output[i][0]:
+                        score += correct_output[i][1]
+                    else:
+                        is_correct = False
+
+                if not status:
+                    if is_correct:
+                        status = "AC"
+                    else:
+                        status = "WA"
+            else:
+                status = "Compilation Error"
+            response = {
+                "Submission Status": status,
+                "Time": total_time,
+                "Memory": total_memory,
+                "Score": score,
+                "Compile Message": compile_message
+            }
+
+            return JSONResponse(response)
 
         except Exception as e:
             traceback_string = traceback.format_exc()
