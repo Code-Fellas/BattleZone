@@ -14,14 +14,11 @@ class UserCreateView(APIView):
 
     def post(self, request):
         try:
-            first_name = request.data['first_name']
-            last_name = request.data['last_name']
+            name = request.data['name']
             email_id = str(request.data['email']).strip()
             mobile_number = request.data['mobile_number']
-            academic_year = int(request.data['academic_year'])
             password = make_password(request.data['password'])
             username = str(request.data['username'])
-            university = request.data['university']
 
             user_object = Users.objects.filter(email=email_id)
             if user_object.exists():
@@ -42,14 +39,11 @@ class UserCreateView(APIView):
 
             else:
                 new_user = Users.objects.create(
-                                first_name=first_name,
-                                last_name=last_name,
+                                name=name,
                                 email=email_id,
                                 username=username,
                                 password=password,
                                 mobile_number=mobile_number,
-                                current_year=academic_year,
-                                current_university=university,
                                 is_active=True,
                             )
 
@@ -65,7 +59,8 @@ class UserCreateView(APIView):
             response = {
                 'message': 'Failed to Create New User',
                 'status': False,
-                'exception': e.message
+                'exception': e.message,
+                'traceback': traceback_string
             }
 
             return JSONResponse(response)
