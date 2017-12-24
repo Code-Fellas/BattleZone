@@ -7,17 +7,24 @@ def f():
     d = {}
 
     code = '''
-i=0
-while i>0:
-    i+=1
+#include<iostream>
+using namespace std;
+
+int main(){
+	long long a,b;
+	long long sum=0;
+    cin>>a>>b;
+	cout<<a+b
+	return 0;
+}
     '''
     print code
     d['source'] = code
-    testcases = str(['5\n2 3 4 5 5', '3\n2 3 4', '4\n4 6 6 10', '5\n111 111 111 111 111'])
+    testcases = str(['2 3','3 4','10 0','0 0','1000000000 1000000000'])
     d['testcases'] = testcases
     d['api_key']=key
     d['format']='json'
-    d['lang']='5'
+    d['lang']='2'
     re = requests.post(url,data=d)
     print re.json()
 

@@ -4,26 +4,23 @@ from ide.models import Languages
 from contest.models import Testcases, Problem, Contests
 from ide.serializers import LanguageSerializer
 from middleware.response import JSONResponse
-import requests,traceback
+import requests, traceback
 
 
 # Create your views here.
 
 
 class FetchLanguagesView(APIView):
-
     def get(self, request):
-
         response = {
             'status': True,
             'message': 'Languages Fetched successfully',
-            'data' : LanguageSerializer(instance=Languages.objects.all(), many=True).data
+            'data': LanguageSerializer(instance=Languages.objects.all(), many=True).data
         }
         return JSONResponse(response)
 
 
 class SubmissionView(APIView):
-
     def post(self, request):
         try:
             language_code = request.data['language_code'],
@@ -45,7 +42,7 @@ class SubmissionView(APIView):
 
             contest = Contests.objects.get(contest_code=contest_code)
             contest_id = contest.id
-            problem = Problem.objects.filter(problem_code=str(problem_code),contest_id=str(contest_id))
+            problem = Problem.objects.filter(problem_code=str(problem_code), contest_id=str(contest_id))
             problem_id = problem.first().id
             test_cases = Testcases.objects.filter(problem_id=problem_id).values_list("input", flat=True)
             test_cases = [tc.encode('ascii', 'ignore') for tc in test_cases]
@@ -54,42 +51,56 @@ class SubmissionView(APIView):
             response = requests.post(url, payload)
 
             response = response.json()
-            output = list(response['result']['stdout'])
+            if response['result']['stdout'] is not None:
+                output = list(response['result']['stdout'])
+            else:
+                output = None
             memory = response['result']['memory']
-            total_memory = sum(memory)
+            stderr = response['result']['stderr']
             time = response['result']['time']
-            total_time = sum(time)
             message = response['result']['message']
             compile_message = response['result']['compilemessage']
-            status = ""
-            if compile_message == "":
-                if "Runtime error" in message:
-                    status = "Runtime error"
-                if "Terminated due to timeout" in message:
-                    status = "TLE"
-                correct_output = list(Testcases.objects.filter(problem_id=problem_id).values_list("output", "marks"))
-                score = 0
-                is_correct = True
-                for i in range(len(correct_output)):
-                    if output[i].strip() == correct_output[i][0]:
-                        score += correct_output[i][1]
-                    else:
-                        is_correct = False
-
-                if not status:
-                    if is_correct:
-                        status = "AC"
-                    else:
-                        status = "WA"
-            else:
-                status = "Compilation Error"
+            score = 0
             response = {
-                "Submission Status": status,
-                "Time": total_time,
-                "Memory": total_memory,
-                "Score": score,
-                "Compile Message": compile_message
+                "Submission Status": None,
+                "Time": None,
+                "Memory": None,
+                "Score": 0,
+                "Compile Message": None
             }
+            if compile_message != "":
+                response["Submission Status"] = "CE"
+                response["Compile Message"] = compile_message
+
+            else:
+                if "Terminated due to timeout" in message:
+                    response["Submission Status"] = "TLE"
+                if "Runtime Error" in message:
+                    response["Submission Status"] = "RTE"
+
+                response["TestCases"] = {"Errormessage": stderr, "Status": message}
+                correct_output = list(Testcases.objects.filter(problem_id=problem_id).values_list("output", "marks"))
+                for i in range(len(correct_output)):
+                    if message[i] == "Success":
+                        if output[i].strip() == correct_output[i][0]:
+                            response["TestCases"]["Errormessage"][i] = None
+                            response["TestCases"]["Status"][i] = "Passed"
+                            score += correct_output[i][1]
+                        else:
+                            response["TestCases"]["Errormessage"][i] = None
+                            response["TestCases"]["Status"][i] = "Wrong Answer"
+
+                if response["Submission Status"] is None:
+                    if len(message) == message.count("Passed"):
+                        response["Submission Status"] = "AC"
+                    else:
+                        response["Submission Status"] = "WA"
+
+            response["Score"] = score
+            if time is not None:
+                response["Time"] = sum(time)
+            if memory is not None:
+                response["Memory"] = sum(memory)
 
             return JSONResponse(response)
 
@@ -98,7 +109,8 @@ class SubmissionView(APIView):
             response = {
                 'message': 'Failed to Submit',
                 'status': False,
-                'exception': e.message
+                'exception': e.message,
+                'traceback_string' : traceback_string
             }
 
             return JSONResponse(response)
