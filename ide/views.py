@@ -101,14 +101,16 @@ class SubmissionView(APIView):
                 response["Time"] = sum(time)
             if memory is not None:
                 response["Memory"] = sum(memory)
-
+            response['status_check']=True
+            print response
             return JSONResponse(response)
 
         except Exception as e:
             traceback_string = traceback.format_exc()
             response = {
                 'message': 'Failed to Submit',
-                'status': False,
+                'status_check': False,
+                'Submission_status': 'Judge has Some Issue',
                 'exception': e.message,
                 'traceback_string' : traceback_string
             }

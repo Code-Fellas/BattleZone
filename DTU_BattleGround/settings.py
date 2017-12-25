@@ -94,11 +94,11 @@ WSGI_APPLICATION = 'DTU_BattleGround.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': os.environ['DB_HOST'],
+        'HOST': 'localhost',
         'PORT': 3306,
         'NAME': 'battlezone',
-        'USER': os.environ['DB_USER_NAME'],
-        'PASSWORD': os.environ['DB_USER_PASSWORD']
+        'USER': 'root',
+        'PASSWORD': '123456'
     }
 }
 
